@@ -1,10 +1,13 @@
 import React from 'react'
 import './styles.scss';
 import { Link } from 'react-router-dom';
-
+import { auth } from '../../firebase/utils';
 import Logo from './../../assets/Logo.png';
+import { useGlobalContext } from '../context/context'; 
 
 const Navbar = () => {
+    const { isLogIn } = useGlobalContext();
+    
     return (
         <header className='header'>
             <div className="container">
@@ -13,15 +16,33 @@ const Navbar = () => {
                         <img src={Logo} alt="API Logo" />
                     </Link>
                 </div>
-                <div className='navbarLinks'>
-                    <ul>
-                        <li>
-                            <Link to='/registration'>
-                                Registrate
-                            </Link>
 
-                        </li>
-                    </ul>
+                <div className='navbarLinks'>
+                    {!isLogIn.currentUser && (
+                        <ul>
+                            <li>
+                                <Link to='/registration'>
+                                    Registrate
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to='/login'>
+                                    Login
+                                </Link>
+                            </li>
+                        </ul>
+                    )}
+
+                    {isLogIn.currentUser && (
+                        <ul>
+                            <li>
+                                <button onClick={() => auth.signOut()}>
+                                    LogOut
+                                </button>
+                            </li>
+                        </ul>
+                    )}
+
                 </div>
             </div>
         </header>
