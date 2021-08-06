@@ -1,9 +1,10 @@
-import React from 'react'
+import React from 'react';
+import SignUp from '../../components/SignUp/SignUp';
 
 const Registration = () => {
     return (
         <section className='registration'>
-            <p>Registration page</p>
+            <SignUp />
         </section>
     )
 }

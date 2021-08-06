@@ -9,6 +9,7 @@ import HomepageLayout from "./layouts/HomepageLayout";
 import Homepage from "./pages/Homepage/Homepage";
 import Registration from "./pages/Registration/Registration";
 import Login from "./pages/Login/Login";
+import Recovery from "./pages/Recovery/Recovery";
 
 import './default.scss';
 
@@ -25,16 +26,24 @@ function App() {
           </HomepageLayout>
         )} />
 
-        <Route exact path='/registration' render={() => (
-          <MainLayout>
-            <Registration />
-          </MainLayout>
+        <Route exact path='/registration' 
+          render={() => isLogIn.currentUser ? <Redirect to='/'/> : (
+            <MainLayout>
+              <Registration />
+            </MainLayout>
         )} />
 
         <Route exact path='/login' 
           render={() => isLogIn.currentUser ? <Redirect to='/' /> : (
             <MainLayout>
               <Login />
+            </MainLayout>
+          )} />
+
+        <Route exact path='/recovery' 
+          render={() => (
+            <MainLayout>
+              <Recovery />
             </MainLayout>
           )} />
       </Switch>

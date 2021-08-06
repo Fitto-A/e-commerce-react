@@ -1,0 +1,24 @@
+.auth-container {
+    display: block;
+    width: 100%;
+    max-width: 40.0rem;
+    margin: 4rem auto 6rem;
+    border: 3px solid #E61A5D;
+    border-radius: 8px;
+
+    .content{
+        padding: 1rem;
+        
+        h2 {
+            font-size: 2.4rem;
+            font-weight: 600;
+            text-align: center;
+            text-transform: uppercase;
+            padding: 0;
+            margin: 0 auto 3rem;
+            display: block;
+            width: 100%;
+            color: #0082A4;
+        }
+    }
+}
