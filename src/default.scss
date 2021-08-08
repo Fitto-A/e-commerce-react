@@ -33,6 +33,11 @@ a, a:hover {
     -moz-transition: all .4s ease-in-out;
     transition: all .4s ease-in-out;
 }
+span:hover {
+    -webkit-transition: all .4s ease-in-out;
+    -moz-transition: all .4s ease-in-out;
+    transition: all .4s ease-in-out;    
+}
 
 .main {
     width: 100%;
@@ -41,3 +46,25 @@ a, a:hover {
     padding: 0 10px;
     margin: 0 auto;
 }
+
+.control-panel {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    min-height: 100%;
+    padding: 3rem 0 6rem 38rem;
+
+    .sidebar {
+        position: absolute;
+        top: 0; left: 0;
+        width: 33rem;
+        height: 100%;
+        z-index: 1;
+        padding: 2rem 0 0;
+        border-right: 1px solid #0082A4;
+    }
+}
+
+.admin.layout {
+    height: calc(100% - 6.5rem - 5.8rem - 3.6rem);
+  }

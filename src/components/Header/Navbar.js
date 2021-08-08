@@ -36,6 +36,11 @@ const Navbar = () => {
                     {isLogIn.currentUser && (
                         <ul>
                             <li>
+                                <Link to='/micuenta'>
+                                    Mi cuenta
+                                </Link>
+                            </li>
+                            <li>
                                 <button onClick={() => auth.signOut()}>
                                     LogOut
                                 </button>

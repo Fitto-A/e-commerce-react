@@ -1,0 +1,60 @@
+.vertical-nav {
+    width: 100%;
+    height: 100%;
+    .user-info {
+        padding-left: 10rem;
+
+        ul {
+            li {
+                list-style-type: none;
+
+                span {
+
+                    text-transform: uppercase;
+                    color: #0082A4;
+                
+                }
+            }
+        }
+    }
+
+    .menu {
+        margin: 3rem auto 0;
+
+        ul, li {
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+        }
+    
+        ul {
+
+            li {        
+                width: 100%;
+                border-bottom: 1px solid #0082A4;
+
+                &:first-child {
+                    border-top: 1px solid #0082A4;
+                }
+            }
+
+            a, span {
+                display: block;
+                padding-left: 14rem;
+                padding-top: 1rem;
+                padding-bottom: 1rem;
+                width: 100%;
+                color: #0082A4;
+                cursor: pointer;
+
+                &:hover {
+                    color: #E61A5D;
+                }
+
+            }
+    
+        }
+
+    }
+
+}
