@@ -17,9 +17,7 @@ const Homepage = () => {
                     style={{ backgroundImage: `url(${ImgDer})` }}
                 >
                 </div>
-
             </div>
-
         </section>
     )
 }

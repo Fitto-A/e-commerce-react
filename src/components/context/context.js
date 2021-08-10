@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
-import { auth, handleUserProfile } from "../../firebase/utils";
+import { firestore, auth, handleUserProfile } from "../../firebase/utils";
+import { handleAddProduct, handleFetchProducts } from '../../components/Products/Products.helper';
+
 
 const AppContext = React.createContext();
 
@@ -10,6 +12,7 @@ const AppProvider = ({ children }) => {
     }
 
     const [isLogIn, setIsLogIn] = useState(initialState)
+    const [products, setProducts] = useState([])
 
     var authListeneer = null;
 
@@ -30,14 +33,77 @@ const AppProvider = ({ children }) => {
         })
     }
 
+
+    //PRODUCTS
+
+    const handleAddNewProduct = (productCategory, productName, productImg, productPrice) => {
+        try {
+            const timestamp = new Date();
+            handleAddProduct({
+                productCategory,
+                productName,
+                productImg,
+                productPrice,
+                productAdminUserUID: auth.currentUser.uid,
+                createdDate: timestamp
+            })
+            
+        } catch (error) {
+            
+        }
+    }
+
+    const fetchProducts = async () => {
+
+        firestore.collection('products')
+            .onSnapshot((querySnapshot)=> {
+                const productsArray = [];
+                querySnapshot.forEach((doc) => {
+                    productsArray.push({...doc.data(), id: doc.id})
+                })
+                setProducts(productsArray)
+            })
+
+
+        // try {
+        //     const newProducts = handleFetchProducts();
+        //     console.log(products);
+        //     setProducts(newProducts);
+        // } catch (err) {
+        //     // console.log(err);
+        // }
+    }
+
+    const deleteProduct = async(productId) =>{
+        try {
+            if (window.confirm('Seguro deseas eliminar el producto?')) {
+                await firestore
+                    .collection('products')
+                    .doc(productId)
+                    .delete();
+            }
+
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+
     useEffect(() => {
         handleLog();
+        fetchProducts();
     },[])
 
 
 
     return <AppContext.Provider
-        value={{isLogIn, setIsLogIn}}
+        value={{
+            isLogIn,
+            setIsLogIn,
+            handleAddNewProduct,
+            products,
+            deleteProduct
+        }}
         >
         { children }
     </AppContext.Provider>
