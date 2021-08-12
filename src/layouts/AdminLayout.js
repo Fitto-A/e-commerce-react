@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { auth } from '../firebase/utils';
 
 import Navbar from '../components/Header/Navbar'
 import VerticalNavbar from '../components/VerticalNavbar/VerticalNavbar'
@@ -22,7 +23,7 @@ const AdminLayout = props => {
                                     </Link>
                                 </li>
                                 <li>
-                                    <span className='sing-out'>
+                                    <span className='sing-out' onClick={() => auth.signOut()}>
                                         Sing Out
                                     </span>
                                 </li>

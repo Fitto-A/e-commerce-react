@@ -21,6 +21,7 @@ import Login from "./pages/Login/Login";
 import Recovery from "./pages/Recovery/Recovery";
 import MiCuenta from "./pages/MiCuenta/MiCuenta";
 import Admin from "./pages/Admin/Admin";
+import Store from "./pages/Store/Store";
 
 import './default.scss';
 
@@ -59,7 +60,13 @@ function App() {
             </MainLayout>
           )} />
 
-          <Route path='/micuenta' 
+        <Route path='/tienda' render={() => (
+            <MainLayout>
+              <Store />
+            </MainLayout>
+          )} />
+
+        <Route path='/micuenta' 
           render={() => (
             <WithAuth>
               <MainLayout>

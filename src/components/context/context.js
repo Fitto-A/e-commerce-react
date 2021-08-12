@@ -36,13 +36,14 @@ const AppProvider = ({ children }) => {
 
     //PRODUCTS
 
-    const handleAddNewProduct = (productCategory, productName, productImg, productPrice) => {
+    const handleAddNewProduct = (productCategory, productName, productImg, productDescription, productPrice) => {
         try {
             const timestamp = new Date();
             handleAddProduct({
                 productCategory,
                 productName,
                 productImg,
+                productDescription,
                 productPrice,
                 productAdminUserUID: auth.currentUser.uid,
                 createdDate: timestamp
@@ -56,6 +57,7 @@ const AppProvider = ({ children }) => {
     const fetchProducts = async () => {
 
         firestore.collection('products')
+            .orderBy('createdDate')
             .onSnapshot((querySnapshot)=> {
                 const productsArray = [];
                 querySnapshot.forEach((doc) => {

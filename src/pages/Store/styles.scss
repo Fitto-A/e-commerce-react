@@ -1,0 +1,46 @@
+.products {
+    color: #0082A4;
+    margin-bottom: 2.5rem;
+    display: block;
+    width: 100%;
+    padding: 0;
+    margin: 2rem 0 3rem 0;
+    
+    h1 {
+        margin: 4rem auto 4rem 11rem;
+
+    }
+}
+
+.products-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 5rem 1rem;
+    .products-container {
+        justify-content: center;
+        max-width: 300px;
+        margin: auto;
+
+        .product-details {
+            h3 {
+                font-size: 2.2rem;
+            }
+            
+            span {
+                color: black;
+                font-size: 1.6rem;
+            }
+            p {
+                font-size: 2rem;
+                font-weight: 700;
+            }
+        }
+
+            .product-img {
+                img {
+                    max-width: 250px;
+                }
+            }
+    }
+
+}

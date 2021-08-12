@@ -17,6 +17,7 @@ const Admin = () => {
     const [productCategory, setProductCategory] = useState('Memotest')
     const [productPrice, setProductPrice] = useState(0)
     const [productName, setProductName] = useState('')
+    const [productDescription, setProductDescription] = useState('')
     const [productImg, setProductImg] = useState('')
 
 
@@ -35,12 +36,13 @@ const Admin = () => {
         setProductCategory('Memotest')
         setProductImg('')
         setProductName('')
+        setProductDescription('')
         setProductPrice(0)
     }
 
     const handleSubmit = e => {
         e.preventDefault();
-        handleAddNewProduct( productCategory, productName, productImg, productPrice );
+        handleAddNewProduct( productCategory, productName, productImg, productDescription ,productPrice );
         resetForms();
         toggleModal();
     }
@@ -66,7 +68,7 @@ const Admin = () => {
                 <div className='addNewProduct'>
                     <form onSubmit={handleSubmit}>
                         <h2>
-                            Agregar nuevo producto
+                            Agregar producto a la tienda
                         </h2>
 
                         <FormSelect 
@@ -83,8 +85,6 @@ const Admin = () => {
                         />
 
                         <br />
-
-
                         <FormInput
                             type='text'
                             label='Nombre'
@@ -92,12 +92,18 @@ const Admin = () => {
                             handleChange={e => setProductName(e.target.value)}
                         />
 
-                        
                         <FormInput
                             type='url'
                             label='Imagen del producto'
                             value={productImg}
                             handleChange={e => setProductImg(e.target.value)}
+                        />
+
+                        <FormInput
+                            type='text'
+                            label='Descripción producto'
+                            value={productDescription}
+                            handleChange={e => setProductDescription(e.target.value)}
                         />
 
                         <FormInput
@@ -109,7 +115,6 @@ const Admin = () => {
 
                         <Button  
                             type='submit' 
-                            // onClick={() => handleAddNewProduct( productCategory, productName, productImg, productPrice )}
                         >
                             Agregar Producto
                         </Button>
@@ -133,7 +138,7 @@ const Admin = () => {
                                 <table className='results' border='0' cellPadding='10' cellSpacing='0'>
                                     <tbody>
                                         {products.map((product, index)=> {
-                                            const {productName, productPrice, productImg, id} = product;
+                                            const {productName, productPrice, productImg, productDescription, id} = product;
                                             return (
                                                 <tr key={index}>
                                                     <td>
@@ -141,6 +146,9 @@ const Admin = () => {
                                                     </td>
                                                     <td>
                                                         {productName}
+                                                    </td>
+                                                    <td>
+                                                        {productDescription}
                                                     </td>
                                                     <td>
                                                         ${productPrice}

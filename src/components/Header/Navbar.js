@@ -18,36 +18,46 @@ const Navbar = () => {
                 </div>
 
                 <div className='navbarLinks'>
-                    {!isLogIn.currentUser && (
-                        <ul>
-                            <li>
-                                <Link to='/registration'>
-                                    Registrate
-                                </Link>
-                            </li>
-                            <li>
-                                <Link to='/login'>
-                                    Login
-                                </Link>
-                            </li>
-                        </ul>
-                    )}
+                    <ul>
+                        <li>
+                            <Link to='/tienda'>
+                                Tienda
+                            </Link>
+                        </li>
+                        <li>
+                        {!isLogIn.currentUser && (
+                            <ul>
+                                <li>
+                                    <Link to='/registration'>
+                                        Registrate
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link to='/login'>
+                                        Login
+                                    </Link>
+                                </li>
+                            </ul>
+                         )}
 
-                    {isLogIn.currentUser && (
-                        <ul>
-                            <li>
-                                <Link to='/micuenta'>
-                                    Mi cuenta
-                                </Link>
-                            </li>
-                            <li>
-                                <button onClick={() => auth.signOut()}>
-                                    LogOut
-                                </button>
-                            </li>
-                        </ul>
-                    )}
-
+                        </li>
+                        <li>
+                            {isLogIn.currentUser && (
+                                <ul>
+                                    <li>
+                                        <Link to='/micuenta'>
+                                            Mi cuenta
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <button onClick={() => auth.signOut()}>
+                                            LogOut
+                                        </button>
+                                    </li>
+                                </ul>
+                            )}
+                        </li>
+                    </ul>
                 </div>
             </div>
         </header>
