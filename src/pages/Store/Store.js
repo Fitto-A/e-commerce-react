@@ -7,17 +7,18 @@ import LoadMore from '../../components/LoadMore/LoadMore';
 import { useGlobalContext} from '../../components/context/context';
 
 const Store = () => {
-    const { products, fetchProducts, fetchMore, noMoreProducts } = useGlobalContext();
+    const { products, fetchProducts, fetchMore, noMoreProducts, setNoMoreProducts } = useGlobalContext();
 
     const history = useHistory();
     const [filtro, setFiltro] = useState('')
-    const [startAfterDoc, setStartAfterDoc] = useState(5)
-    const [persistProducts, setPersistProducts] = useState([])
+    // const [startAfterDoc, setStartAfterDoc] = useState(5)
+    // const [persistProducts, setPersistProducts] = useState([])
 
     // const { productsArray, queryDoc } = products
     
     useEffect(() => {
         fetchProducts(filtro)
+        setNoMoreProducts(false)
     }, [filtro])
 
     const handleFilter = e => {
@@ -53,7 +54,6 @@ const Store = () => {
 
     const handleLoadMore = () => {
         fetchMore(filtro)
-
         // setStartAfterDoc(queryDoc)
         // setPersistProducts(productsArray)
         // fetchProducts(filtro, startAfterDoc, persistProducts)
@@ -62,7 +62,6 @@ const Store = () => {
     const configLoadMore = {
         onLoadMoreEvt: handleLoadMore,
     }
-    console.log(persistProducts);
 
     return (
         <>

@@ -7,6 +7,7 @@ import Modal from '../../components/Modal/Modal';
 import FormSelect from '../../components/Forms/FormSelect';
 import FormInput from '../../components/Forms/FormInput';
 import Button from '../../components/Forms/Button';
+
 import { FaRegTrashAlt } from "react-icons/fa";
 
 
@@ -42,7 +43,7 @@ const Admin = () => {
 
     const handleSubmit = e => {
         e.preventDefault();
-        handleAddNewProduct( productCategory, productName, productImg, productDescription ,productPrice );
+        handleAddNewProduct( productCategory, productName, productImg, productDescription, productPrice );
         resetForms();
         toggleModal();
     }
@@ -137,7 +138,7 @@ const Admin = () => {
                             <td>
                                 <table className='results' border='0' cellPadding='10' cellSpacing='0'>
                                     <tbody>
-                                        {products.map((product, index)=> {
+                                        { (Array.isArray(products) && products.length > 0) && products.map((product, index)=> {
                                             const {productName, productPrice, productImg, productDescription, id} = product;
                                             return (
                                                 <tr key={index}>

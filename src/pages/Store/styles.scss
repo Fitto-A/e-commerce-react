@@ -3,12 +3,12 @@
     margin-bottom: 2.5rem;
     display: block;
     width: 100%;
-    padding: 0;
+    padding: 0 0 0 4rem;
     margin: 2rem 0 3rem 0;
     border-left: 1px solid #0082A4;
     
     h1 {
-        margin: 4rem auto 4rem 11rem;
+        margin: 4rem auto 4rem 7.5rem;
 
     }
 }
@@ -17,6 +17,8 @@
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 5rem 1rem;
+    margin-bottom: 3rem;
+
     .products-container {
         justify-content: center;
         max-width: 300px;
@@ -66,8 +68,17 @@
             padding: 3rem 0 3rem 3rem;
             border-bottom: 1px solid #0082A4;
             
-            span {
+            button {
                 cursor: pointer;
+                border: none;
+                background: none;
+                font-size: 1.8rem;
+                color: #0082A4;
+                padding-right: 2.5rem;
+                
+                &:hover {
+                    color: cornflowerblue;
+                }
             }
         }
     }

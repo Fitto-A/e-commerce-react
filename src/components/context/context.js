@@ -67,10 +67,17 @@ const AppProvider = ({ children }) => {
             .limit(pageSize)
             .get()
             .then((collections)=> {
+                const totalCount = collections.size;
+                const isCollectionEmpty = totalCount < 2;
+                if(!isCollectionEmpty){
                 const newProducts = collections.docs.map((product) => product.data());
                 const lastDoc = collections.docs[collections.docs.length - 1];
                 setProducts(newProducts);
                 setLastDoc(lastDoc)
+                } else {
+                    setNoMoreProducts(true)
+                }
+
             })
     }
 
@@ -78,22 +85,29 @@ const AppProvider = ({ children }) => {
 
     const fetchMore = (filtro) => {
         if (filtro) productsRef = productsRef.where('productCategory', '==', filtro);
-
+        
         productsRef
-            .startAt(lastDoc)
-            .limit(pageSize)            
-            .get()
-            .then((collections)=> {
-                if(!noMoreProducts){
+        .startAt(lastDoc)
+        .limit(pageSize)            
+        .get()
+        .then((collections)=> {
+            const totalCount = collections.size;
+            const isCollectionEmpty = totalCount < 2;
+            
+                if(!isCollectionEmpty){
+
                     const newProducts = collections.docs.map((product) => product.data());
                     const lastDoc = collections.docs[collections.docs.length - 1];
                     setProducts((products) => [...products, ...newProducts] );
                     setLastDoc(lastDoc)
                 } else {
-                    setNoMoreProducts(true)
+                    setNoMoreProducts(true);
                 }
-            })
+            
+        })
     }
+
+    
 
     //OPCION 2
     // const fetchProducts = async (filtro, startAfterDoc, persistProducts) => {
@@ -175,7 +189,8 @@ const AppProvider = ({ children }) => {
             deleteProduct,
             fetchProducts,
             fetchMore,
-            noMoreProducts
+            noMoreProducts,
+            setNoMoreProducts
         }}
         >
         { children }
