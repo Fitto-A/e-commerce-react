@@ -20,11 +20,15 @@ const Navbar = () => {
                 <div className='navbarLinks'>
                     <ul>
                         <li>
+                            <Link to='/'>
+                                Home
+                            </Link>
+                        </li>
+                        <li>
                             <Link to='/tienda'>
                                 Tienda
                             </Link>
                         </li>
-                        <li>
                         {!isLogIn.currentUser && (
                             <ul>
                                 <li>
@@ -39,8 +43,6 @@ const Navbar = () => {
                                 </li>
                             </ul>
                          )}
-
-                        </li>
                         <li>
                             {isLogIn.currentUser && (
                                 <ul>

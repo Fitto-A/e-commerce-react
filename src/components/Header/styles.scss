@@ -1,7 +1,8 @@
 .header {
     height: 6.5rem;
-    box-shadow: 0 2px 4px 0 rgba(0,0,0,.1);
-    
+    // box-shadow: 0 2px 4px 0 rgba(0,0,0,.1);
+    // box-shadow: 0 2px 4px 0 rgba(230,26,93,.3);
+    box-shadow: 0 2px 4px 0 rgba(0,130,164,.3);
 
     .container {
         position: relative;
@@ -39,7 +40,7 @@
             li {
                 display: inline;
                 list-style-type: none;
-                margin-right: 1.5rem;
+                margin-right: 2rem;
 
                 &:last-child{
                     margin-right: 0;

@@ -13,6 +13,8 @@ const AppProvider = ({ children }) => {
 
     const [isLogIn, setIsLogIn] = useState(initialState)
     const [products, setProducts] = useState([])
+    const [lastDoc, setLastDoc] = useState();
+    const [noMoreProducts, setNoMoreProducts] = useState(false)
 
     var authListeneer = null;
 
@@ -51,30 +53,96 @@ const AppProvider = ({ children }) => {
             
         } catch (error) {
             
-        }
+     
+       }
     }
 
-    const fetchProducts = async () => {
+    let productsRef = firestore.collection('products').orderBy('createdDate')
+    const pageSize = 6;
+    
+    const fetchProducts = async (filtro) => {
+        if (filtro) productsRef = productsRef.where('productCategory', '==', filtro);
 
-        firestore.collection('products')
-            .orderBy('createdDate')
-            .onSnapshot((querySnapshot)=> {
-                const productsArray = [];
-                querySnapshot.forEach((doc) => {
-                    productsArray.push({...doc.data(), id: doc.id})
-                })
-                setProducts(productsArray)
+        productsRef
+            .limit(pageSize)
+            .get()
+            .then((collections)=> {
+                const newProducts = collections.docs.map((product) => product.data());
+                const lastDoc = collections.docs[collections.docs.length - 1];
+                setProducts(newProducts);
+                setLastDoc(lastDoc)
             })
-
-
-        // try {
-        //     const newProducts = handleFetchProducts();
-        //     console.log(products);
-        //     setProducts(newProducts);
-        // } catch (err) {
-        //     // console.log(err);
-        // }
     }
+
+
+
+    const fetchMore = (filtro) => {
+        if (filtro) productsRef = productsRef.where('productCategory', '==', filtro);
+
+        productsRef
+            .startAt(lastDoc)
+            .limit(pageSize)            
+            .get()
+            .then((collections)=> {
+                if(!noMoreProducts){
+                    const newProducts = collections.docs.map((product) => product.data());
+                    const lastDoc = collections.docs[collections.docs.length - 1];
+                    setProducts((products) => [...products, ...newProducts] );
+                    setLastDoc(lastDoc)
+                } else {
+                    setNoMoreProducts(true)
+                }
+            })
+    }
+
+    //OPCION 2
+    // const fetchProducts = async (filtro, startAfterDoc, persistProducts) => {
+    //     const pageSize = 6;
+
+    //     let ref = firestore.collection('products').orderBy('createdDate').limit(pageSize);
+
+    //     if (filtro) ref = ref.where('productCategory', '==', filtro);
+    //     if(startAfterDoc) ref = ref.startAfter(startAfterDoc);
+
+    //     ref
+    //         .onSnapshot((querySnapshot)=> {
+    //             const totalCount = querySnapshot.size;
+    //             const productsArray = [];
+
+    //             querySnapshot.forEach((doc) => {
+    //                 productsArray.push({
+    //                     ...doc.data(),
+    //                     id: doc.id
+    //                 })
+    //             })
+    //             setProducts({
+    //                 ...persistProducts,
+    //                 productsArray,
+    //                 queryDoc: querySnapshot.docs[totalCount - 1],
+    //                 isLastPage: totalCount < 1
+    //             })
+    //         })
+    // }
+
+    //OBTENER DATOS DE FIRESTORE
+
+    // const fetchProducts = async (filtro) => {
+    //     const pageSize = 6;
+
+    //     let ref = firestore.collection('products').orderBy('createdDate').limit(pageSize);
+
+    //     if (filtro) ref = ref.where('productCategory', '==', filtro);
+
+    //     ref
+    //         .onSnapshot((querySnapshot)=> {
+    //             const productsArray = [];
+    //             querySnapshot.forEach((doc) => {
+    //                 productsArray.push({...doc.data(), id: doc.id})
+    //             })
+    //             setProducts(productsArray)
+    //         })
+    // }
+
 
     const deleteProduct = async(productId) =>{
         try {
@@ -104,7 +172,10 @@ const AppProvider = ({ children }) => {
             setIsLogIn,
             handleAddNewProduct,
             products,
-            deleteProduct
+            deleteProduct,
+            fetchProducts,
+            fetchMore,
+            noMoreProducts
         }}
         >
         { children }

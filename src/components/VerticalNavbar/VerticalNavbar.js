@@ -21,7 +21,6 @@ const VerticalNavbar = ({ children }) => {
             <div className="menu">
                 {children}
             </div>
-            
         </div>
     )
 }

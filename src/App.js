@@ -60,7 +60,13 @@ function App() {
             </MainLayout>
           )} />
 
-        <Route path='/tienda' render={() => (
+        <Route exact path='/tienda' render={() => (
+            <MainLayout>
+              <Store />
+            </MainLayout>
+          )} />
+
+        <Route path='/tienda/:filterType' render={() => (
             <MainLayout>
               <Store />
             </MainLayout>

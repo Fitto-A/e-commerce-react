@@ -4,7 +4,6 @@ export const handleAddProduct = product => {
     return new Promise ((resolve, reject) => {
         firestore
             .collection('products')
-            .orderBy('createdDate')
             .doc()
             .set(product)
             .then(() => {
