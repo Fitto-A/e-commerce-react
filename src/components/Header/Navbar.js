@@ -3,11 +3,19 @@ import './styles.scss';
 import { Link } from 'react-router-dom';
 import { auth } from '../../firebase/utils';
 import Logo from './../../assets/Logo.png';
+
+import { useSelector } from 'react-redux';
+
 import { useGlobalContext } from '../context/context'; 
 
-const Navbar = () => {
-    const { isLogIn } = useGlobalContext();
-    
+const mapState = ({ user }) => ({
+    currentUser: user.currentUser
+});
+
+const Navbar = props => {
+
+    const { currentUser } = useSelector(mapState)
+
     return (
         <header className='header'>
             <div className="container">
@@ -29,7 +37,7 @@ const Navbar = () => {
                                 Tienda
                             </Link>
                         </li>
-                        {!isLogIn.currentUser && (
+                        {!currentUser && (
                             <ul>
                                 <li>
                                     <Link to='/registration'>
@@ -44,7 +52,7 @@ const Navbar = () => {
                             </ul>
                          )}
                         <li>
-                            {isLogIn.currentUser && (
+                            {currentUser && (
                                 <ul>
                                     <li>
                                         <Link to='/micuenta'>

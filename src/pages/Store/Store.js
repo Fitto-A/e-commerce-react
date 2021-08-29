@@ -63,6 +63,8 @@ const Store = () => {
         onLoadMoreEvt: handleLoadMore,
     }
 
+    console.log(products);
+
     return (
         <>
             <div className="vertical-nav-store">
@@ -76,14 +78,14 @@ const Store = () => {
 
                 <div className="products-grid">
                     {products.map((product, pos)=> {
-                        const { productName, productImg, productDescription, productPrice, id} = product
+                        const { productName, productImg, productDescription, productPrice, productID} = product
                         
                         const config = {
                             productName,
                             productImg,
                             productDescription,
                             productPrice,
-                            id      
+                            productID
                         }
                         
                         return(

@@ -1,4 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useDispatch } from 'react-redux';
+import { setCurrentUser } from "../../redux/User/user.actions";
+
 import { firestore, auth, handleUserProfile } from "../../firebase/utils";
 import { handleAddProduct, handleFetchProducts } from '../../components/Products/Products.helper';
 
@@ -6,6 +9,8 @@ import { handleAddProduct, handleFetchProducts } from '../../components/Products
 const AppContext = React.createContext();
 
 const AppProvider = ({ children }) => {
+
+    const dispatch = useDispatch();
 
     const initialState = {
         currentUser: null
@@ -15,6 +20,7 @@ const AppProvider = ({ children }) => {
     const [products, setProducts] = useState([])
     const [lastDoc, setLastDoc] = useState();
     const [noMoreProducts, setNoMoreProducts] = useState(false)
+    const [productById, setProductById] = useState([])
 
     var authListeneer = null;
 
@@ -23,15 +29,13 @@ const AppProvider = ({ children }) => {
             if (userAuth) {
                 const userRef = await handleUserProfile(userAuth);
                 userRef.onSnapshot(snapshot => {
-                    setIsLogIn({
-                        currentUser: {
-                            id: snapshot.id,
-                            ...snapshot.data()
-                        }
-                    })
+                    dispatch(setCurrentUser({
+                        id: snapshot.id,
+                        ...snapshot.data()
+                    }))
                 })
             }
-            setIsLogIn(initialState)
+            dispatch(setCurrentUser(userAuth))
         })
     }
 
@@ -41,6 +45,7 @@ const AppProvider = ({ children }) => {
     const handleAddNewProduct = (productCategory, productName, productImg, productDescription, productPrice) => {
         try {
             const timestamp = new Date();
+            const dateID = Date.now();
             handleAddProduct({
                 productCategory,
                 productName,
@@ -48,7 +53,8 @@ const AppProvider = ({ children }) => {
                 productDescription,
                 productPrice,
                 productAdminUserUID: auth.currentUser.uid,
-                createdDate: timestamp
+                createdDate: timestamp,
+                productID: dateID
             })
             
         } catch (error) {
@@ -95,7 +101,6 @@ const AppProvider = ({ children }) => {
             const isCollectionEmpty = totalCount < 2;
             
                 if(!isCollectionEmpty){
-
                     const newProducts = collections.docs.map((product) => product.data());
                     const lastDoc = collections.docs[collections.docs.length - 1];
                     setProducts((products) => [...products, ...newProducts] );
@@ -103,60 +108,21 @@ const AppProvider = ({ children }) => {
                 } else {
                     setNoMoreProducts(true);
                 }
-            
         })
     }
 
-    
 
-    //OPCION 2
-    // const fetchProducts = async (filtro, startAfterDoc, persistProducts) => {
-    //     const pageSize = 6;
+    const fetchProductById = (id) => {
+        if (id) productsRef = productsRef.where('productID', '==', id)
 
-    //     let ref = firestore.collection('products').orderBy('createdDate').limit(pageSize);
-
-    //     if (filtro) ref = ref.where('productCategory', '==', filtro);
-    //     if(startAfterDoc) ref = ref.startAfter(startAfterDoc);
-
-    //     ref
-    //         .onSnapshot((querySnapshot)=> {
-    //             const totalCount = querySnapshot.size;
-    //             const productsArray = [];
-
-    //             querySnapshot.forEach((doc) => {
-    //                 productsArray.push({
-    //                     ...doc.data(),
-    //                     id: doc.id
-    //                 })
-    //             })
-    //             setProducts({
-    //                 ...persistProducts,
-    //                 productsArray,
-    //                 queryDoc: querySnapshot.docs[totalCount - 1],
-    //                 isLastPage: totalCount < 1
-    //             })
-    //         })
-    // }
-
-    //OBTENER DATOS DE FIRESTORE
-
-    // const fetchProducts = async (filtro) => {
-    //     const pageSize = 6;
-
-    //     let ref = firestore.collection('products').orderBy('createdDate').limit(pageSize);
-
-    //     if (filtro) ref = ref.where('productCategory', '==', filtro);
-
-    //     ref
-    //         .onSnapshot((querySnapshot)=> {
-    //             const productsArray = [];
-    //             querySnapshot.forEach((doc) => {
-    //                 productsArray.push({...doc.data(), id: doc.id})
-    //             })
-    //             setProducts(productsArray)
-    //         })
-    // }
-
+        productsRef
+            .get()
+            .then((collections)=> {
+                const selectedProducts = collections.docs.map((product) => product.data());
+                // const selectedItem = collections.docs.find((product)=> product.productID == id)
+                setProductById((products) => [...products, ...selectedProducts])
+            })
+    }
 
     const deleteProduct = async(productId) =>{
         try {
@@ -190,7 +156,10 @@ const AppProvider = ({ children }) => {
             fetchProducts,
             fetchMore,
             noMoreProducts,
-            setNoMoreProducts
+            setNoMoreProducts,
+            fetchProductById,
+            setProductById,
+            productById
         }}
         >
         { children }

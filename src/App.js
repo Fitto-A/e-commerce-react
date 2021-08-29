@@ -1,6 +1,10 @@
 import React from "react";
+import './default.scss';
 import { Switch, Route, Redirect} from 'react-router-dom';
 import { useGlobalContext } from "./components/context/context";
+
+// REDUX
+import { useSelector } from 'react-redux';
 
 //COMPONENTS
 import AdminToolbar from './components/AdminToolbar/AdminToolbar'
@@ -22,12 +26,12 @@ import Recovery from "./pages/Recovery/Recovery";
 import MiCuenta from "./pages/MiCuenta/MiCuenta";
 import Admin from "./pages/Admin/Admin";
 import Store from "./pages/Store/Store";
-
-import './default.scss';
+import ProductDetail from "./pages/ProductDetail/ProductDetail";
 
 function App() {
 
   const {isLogIn} = useGlobalContext();
+
   
   return (
     <div className="App">
@@ -69,6 +73,12 @@ function App() {
         <Route path='/tienda/:filterType' render={() => (
             <MainLayout>
               <Store />
+            </MainLayout>
+          )} />
+          
+          <Route path='/product/:productID' render={() => (
+            <MainLayout>
+              <ProductDetail />
             </MainLayout>
           )} />
 

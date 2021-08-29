@@ -7,12 +7,12 @@ import Modal from '../../components/Modal/Modal';
 import FormSelect from '../../components/Forms/FormSelect';
 import FormInput from '../../components/Forms/FormInput';
 import Button from '../../components/Forms/Button';
-
+import LoadMore from '../../components/LoadMore/LoadMore';
 import { FaRegTrashAlt } from "react-icons/fa";
 
 
 const Admin = () => {
-    const { handleAddNewProduct, products, deleteProduct } = useGlobalContext()
+    const { handleAddNewProduct, products, deleteProduct, fetchMore, noMoreProducts } = useGlobalContext()
 
     const [hideModal, setHideModal] = useState(true)
     const [productCategory, setProductCategory] = useState('Memotest')
@@ -48,10 +48,14 @@ const Admin = () => {
         toggleModal();
     }
 
-    useEffect(() => {
-        console.log(products);
-        
-    }, [])
+
+    const handleLoadMore = () => {
+        fetchMore()
+    }
+
+    const configLoadMore = {
+        onLoadMoreEvt: handleLoadMore,
+    }
 
     return (
         <div className='admin-content'>
@@ -169,6 +173,21 @@ const Admin = () => {
                                 </table>
                             </td>
                         </tr>
+                        {!noMoreProducts && 
+                        <tr>
+                            <td>
+                                <table border='0' cellPadding='15' cellSpacing='0'>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <LoadMore { ...configLoadMore }/>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        }
                     </tbody>
                 </table>
             </div>

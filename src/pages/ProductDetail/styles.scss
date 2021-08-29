@@ -1,0 +1,12 @@
+.productId-container {
+    display: flex;
+    margin: 8rem auto;
+    padding: 0;
+
+    .productId-img {
+        margin-right: 5rem;
+        img{
+            max-width: 450px;
+        }
+    }
+}   

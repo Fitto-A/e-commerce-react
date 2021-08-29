@@ -1,17 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './styles.scss';
-import { withRouter } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'; 
+import { resetPassword, resetAllAuthForms } from '../../redux/User/user.actions';
+
+import { withRouter, useHistory } from 'react-router-dom'
 
 import AuthContent from '../AuthContent/AuthContent'
 import FormInput from '../Forms/FormInput'
 import Button from '../Forms/Button'
 
-import { auth } from '../../firebase/utils';
+const mapState = ({ user }) => ({
+    resetPasswordSuccess: user.resetPasswordSuccess,
+    resetPasswordError: user.resetPasswordError
+})
 
-const EmailPassword = (props) => {
+const EmailPassword = props => {
+    const { resetPasswordSuccess, resetPasswordError } = useSelector(mapState);
+    const dispatch = useDispatch();
+    const history = useHistory();
 
     const [email, setEmail] = useState('');
     const [errors, setErrors] = useState([]);
+
+    useEffect(() => {
+        if(resetPasswordSuccess){
+            dispatch(resetAllAuthForms());
+            history.push('/login');
+        }
+
+    }, [resetPasswordSuccess])
+
+
+    useEffect(() => {
+        if(Array.isArray(resetPasswordError) && resetPasswordError.length > 0) {
+            setErrors(resetPasswordError)
+        }
+    }, [resetPasswordError])
 
     const handleChange = e => {
         const {name, value} = e.target
@@ -19,29 +43,10 @@ const EmailPassword = (props) => {
         setEmail(value)
     }
 
-    const handleSubmit = async e => {
+    const handleSubmit = e => {
         e.preventDefault();
+        dispatch(resetPassword({ email }))
 
-        try {
-            const config = {
-                //Link para mandar al usuario luego de que resetee su contraseña
-                url: 'http://localhost:3000/login'
-            }
-
-            await auth.sendPasswordResetEmail(email, config)
-                .then(() => {
-                    props.history.push('/login')
-                    console.log('Contraseña reseteada');
-                })
-                .catch(() => {
-                    const err = ['La casilla de correo electrónico ingresada no es válida. Por favor intenta nuevamente']
-                    setErrors(err)
-                    console.log('Algo salio mal');
-                })
-
-        } catch (err) {
-            console.log(err);
-        }
     }
 
 
